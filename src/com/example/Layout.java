@@ -3,19 +3,26 @@ package com.example;
 import com.example.Room;
 
 public class Layout {
-    public static String startingRoom;
-    public static String endingRoom;
-    public static Room[] rooms;
+    private String startingRoom;
+    private String endingRoom;
+    private Room[] rooms;
 
-    public static String getStartingRoom() {
+    public Layout(String startingRoom, String endingRoom, Room[] rooms) {
+        this.startingRoom = startingRoom;
+        this.endingRoom = endingRoom;
+        this.rooms = rooms;
+    }
+
+    public String getStartingRoom() {
         return startingRoom;
     }
 
-    public static String getEndingRoom() {
+    public String getEndingRoom() {
         return endingRoom;
     }
 
-    public static Room[] getRooms() {
+    public Room[] getRooms() {
+
         return rooms;
     }
 }

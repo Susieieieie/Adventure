@@ -1,24 +1,45 @@
 package com.example;
 
-public class Room {
-    public static String name;
-    public static String description;
-    public static Direction[] directions;
-    public static String[] items;
+import com.google.gson.Gson;
 
-    public static String getName() {
+import java.io.IOException;
+import java.util.List;
+
+public class Room {
+    private String name;
+    private String description;
+    private List<Direction> directions;
+    private List<String> items;
+
+    public Room(String name, String description, List<Direction> direction, List<String> iterms) {
+        super();
+        this.name = name;
+        this.description = description;
+        this.directions = direction;
+        this.items = iterms;
+    }
+
+    public String getName() {
         return name;
     }
 
-    public static String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public static Direction[] getDirections() {
-        return directions;
+    public List<Direction> getDirectionList() throws IOException {
+        Gson json = new Gson();
+        List<Direction> directionList = json.fromJson(Parse.getRootobj().get("Direction"),Direction.class);
+        return directionList;
     }
 
-    public static String[] getItems() {
+
+    public String getItemsInString() {
+        if (items.isEmpty()) {
+            return "No item.";
+        } else {
+            StringBuffer
+        }
         return items;
     }
 }

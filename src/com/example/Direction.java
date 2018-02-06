@@ -1,14 +1,26 @@
 package com.example;
 
-public class Direction {
-    public static String directionName;
-    public static String room;
+import com.google.gson.Gson;
 
-    public static String getDirectionName() {
+import java.io.IOException;
+import java.util.List;
+
+public class Direction {
+    private String directionName;
+    private String room;
+
+    public Direction(String directionName, String room) {
+        super();
+        this.directionName = directionName;
+        this.room = room;
+    }
+
+    public String getDirectionName() {
         return directionName;
     }
 
-    public static String getRoom() {
+    public String getRoom() {
         return room;
     }
+
 }

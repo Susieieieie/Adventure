@@ -3,7 +3,6 @@ package com.example;
 import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -58,23 +57,4 @@ public class AdventureTest {
     public void main() {
     }
 
-    @Test
-    public void getDirectionName() {
-        assertEquals("East",Direction.getDirectionName());
-    }
-
-    @Test
-    public void getStartingRoomTest() {
-        assertEquals("MatthewsStreet",Layout.getStartingRoom());
-    }
-
-    @Test
-    public void getEndingRoomTest() {
-        assertEquals("Siebel1314",Layout.getEndingRoom());
-    }
-
-    @Test
-    public void getNameTest() {
-        assertEquals("MatthewsStreet",Room.getName());
-    }
 }
