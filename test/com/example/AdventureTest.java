@@ -1,60 +1,48 @@
 package com.example;
 
 import com.google.gson.Gson;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class AdventureTest {
-    public static final String JSON_FOR_URL_TEXT = "{\n" +
-            "  \"startingRoom\": \"MatthewsStreet\",\n" +
-            "  \"endingRoom\": \"Siebel1314\",\n" +
-            "  \"rooms\": [\n" +
-            "    {\n" +
-            "      \"name\": \"MatthewsStreet\",\n" +
-            "      \"description\": \"You are on Matthews, outside the Siebel Center\",\n" +
-            "      \"items\": [\"coin\"],\n" +
-            "      \"directions\": [\n" +
-            "        {\n" +
-            "          \"directionName\": \"East\",\n" +
-            "          \"room\": \"SiebelEntry\"\n" +
-            "        }\n" +
-            "      ]\n" +
-            "    },\n";
-    public static final String JSON_FOR_ARRAY_OF_TEXT = "[{\n" +
-            "  \"startingRoom\": \"MatthewsStreet\",\n" +
-            "  \"endingRoom\": \"Siebel1314\",\n" +
-            "  \"rooms\": [\n" +
-            "    {\n" +
-            "      \"name\": \"MatthewsStreet\",\n" +
-            "      \"description\": \"You are on Matthews, outside the Siebel Center\",\n" +
-            "      \"items\": [\"coin\"],\n" +
-            "      \"directions\": [\n" +
-            "        {\n" +
-            "          \"directionName\": \"East\",\n" +
-            "          \"room\": \"SiebelEntry\"\n" +
-            "        }\n" +
-            "      ]\n" +
-            "    },\n]";
-    public static Adventure adventure;
-    public  static Adventure[] adventureArray;
-    public static ArrayList<Adventure> adventures;
+    private static Adventure adventure;
 
     @Before
     public void setUp() throws Exception {
         Gson gson = new Gson();
-        adventure = gson.fromJson(JSON_FOR_URL_TEXT, Adventure.class);
-        adventureArray = gson.fromJson(JSON_FOR_ARRAY_OF_TEXT, Adventure[].class);
-        adventures = new ArrayList<Adventure>();
-        for (int i = 0; i < adventureArray.length; i++) {
-            adventures.add(adventureArray[i]);
+        String url = "https://courses.engr.illinois.edu/cs126/adventure/siebel.json";
+        final HttpResponse<String> stringHttpResponse = Unirest.get(url).asString();
+        if (stringHttpResponse.getStatus() == 200) {
+            String json = stringHttpResponse.getBody();
+            adventure = gson.fromJson(json, Adventure.class);
         }
     }
 
     @Test
     public void main() {
     }
+
+    @Test
+    public void getStartingRoomTest() {
+        assertEquals("MatthewsStreet", adventure.getStartingRoom());
+    }
+
+    @Test
+    public void getDescriptionTest() {
+        assertEquals("You are on Matthews, outside the Siebel Center", adventure.getRooms()[0].getDescription());
+    }
+
+    @Test
+    public void getDirectionName(){
+        assertEquals("East", adventure.getRooms()[0].getDirections()[0].getDirectionName());
+    }
+
+    @Test
+
+
 
 }

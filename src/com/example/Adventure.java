@@ -1,20 +1,56 @@
 package com.example;
-import com.google.gson.Gson;
 
-import java.io.IOException;
+import java.util.Scanner;
 
 public class Adventure {
-    public static void main(String[] args) throws IOException {
-        // you can remove this code; it is just illustrating the use of arguments.
-        System.out.print("The contents of my arguments are: ");
+    private String startingRoom;
+    private String endingRoom;
+    private Room[] rooms;
+    private Player player;
 
-        // this is a 'for each' loop; they are useful when you want to do something to
-        // every element of a collection and you don't care about the index of the element
-        for (String arg : args) {
-            System.out.print("\"" + arg + "\" ");
+    public String getStartingRoom() {
+        return startingRoom;
+    }
+
+    public String getEndingRoom() {
+        return endingRoom;
+    }
+
+    public Room[] getRooms() {
+        return rooms;
+    }
+
+    public void output(){
+        for (int indexRoom = 0; indexRoom < rooms.length; indexRoom++) {
+            if (rooms[indexRoom].getName().equals(startingRoom)) {
+                System.out.println(rooms[indexRoom].getDescription() + "\n");
+                System.out.println("Your journey begins here\n");
+                System.out.println("This room contains" + rooms[indexRoom].getItems() + "\n");
+                System.out.println("From here you can go" + rooms[indexRoom].getDirections()[indexRoom].getDirectionName() + "\n");
+            } else if (rooms[indexRoom].getName().equals(endingRoom)) {
+                System.out.println(rooms[indexRoom].getDescription() + "\n");
+                System.out.println("You have reached your final destination\n");
+                System.out.println("This room contains" + rooms[indexRoom].getItems() + "\n");
+                System.out.println("From here you can go" + rooms[indexRoom].getDirections()[indexRoom].getDirectionName() + "\n");
+            } else {
+                System.out.println(rooms[indexRoom].getDescription()+ "\n");
+                System.out.println("This room contains" + rooms[indexRoom].getItems() + "\n");
+                System.out.println("From here you can go" + rooms[indexRoom].getDirections()[indexRoom].getDirectionName() + "\n");
+            }
         }
+    }
 
-        System.out.println("");
-        // you can remove this code; it is just illustrating the use of arguments.
+    public String getInputFromUser(){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Enter a string");
+        String playerInput = in.nextLine();
+        return playerInput;
+    }
+
+    public void input(){
+        if (getInputFromUser() == "quit" || getInputFromUser() == "exit") {
+
+        }
+        if (getInputFromUser() == "go")
     }
 }

@@ -1,7 +1,4 @@
 package com.example;
-import java.io.IOException;
-import java.util.List;
-
 public class Room {
     private String name;
     private String description;
@@ -24,11 +21,11 @@ public class Room {
         return description;
     }
 
-    public Direction[] getDirectionList() throws IOException {
+    public Direction[] getDirections() {
         return directions;
     }
 
-    public String[] getItemsInString() throws IOException {
+    public String[] getItems() {
             return items;
     }
 }
