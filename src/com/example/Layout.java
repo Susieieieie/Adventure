@@ -1,6 +1,9 @@
 package com.example;
 
 import com.example.Room;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 public class Layout {
     private String startingRoom;

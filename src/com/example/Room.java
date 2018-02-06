@@ -1,22 +1,19 @@
 package com.example;
-
-import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.util.List;
 
 public class Room {
     private String name;
     private String description;
-    private List<Direction> directions;
-    private List<String> items;
+    private Direction[] directions;
+    private String[] items;
 
-    public Room(String name, String description, List<Direction> direction, List<String> iterms) {
+    public Room(String name, String description,Direction[] direction, String[] items) {
         super();
         this.name = name;
         this.description = description;
         this.directions = direction;
-        this.items = iterms;
+        this.items = items;
     }
 
     public String getName() {
@@ -27,19 +24,11 @@ public class Room {
         return description;
     }
 
-    public List<Direction> getDirectionList() throws IOException {
-        Gson json = new Gson();
-        List<Direction> directionList = json.fromJson(Parse.getRootobj().get("Direction"),Direction.class);
-        return directionList;
+    public Direction[] getDirectionList() throws IOException {
+        return directions;
     }
 
-
-    public String getItemsInString() {
-        if (items.isEmpty()) {
-            return "No item.";
-        } else {
-            StringBuffer
-        }
-        return items;
+    public String[] getItemsInString() throws IOException {
+            return items;
     }
 }
