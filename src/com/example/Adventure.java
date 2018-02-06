@@ -1,9 +1,8 @@
 package com.example;
+import java.io.IOException;
 
 public class Adventure {
-
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws IOException {
         // you can remove this code; it is just illustrating the use of arguments.
         System.out.print("The contents of my arguments are: ");
 
