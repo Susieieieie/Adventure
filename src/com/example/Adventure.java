@@ -20,24 +20,29 @@ public class Adventure {
         return rooms;
     }
 
-    public void output(){
-        for (int indexRoom = 0; indexRoom < rooms.length; indexRoom++) {
+    public Player getPlayer(){
+        return player;
+    }
+
+    public void setPlayer(Player player){
+        this.player = player;
+    }
+
+    public Room findStartingRoom(){
+        for (int indexRoom = 0; indexRoom < getRooms().length; indexRoom++) {
             if (rooms[indexRoom].getName().equals(startingRoom)) {
-                System.out.println(rooms[indexRoom].getDescription() + "\n");
-                System.out.println("Your journey begins here\n");
-                System.out.println("This room contains" + rooms[indexRoom].getItems() + "\n");
-                System.out.println("From here you can go" + rooms[indexRoom].getDirections()[indexRoom].getDirectionName() + "\n");
-            } else if (rooms[indexRoom].getName().equals(endingRoom)) {
-                System.out.println(rooms[indexRoom].getDescription() + "\n");
-                System.out.println("You have reached your final destination\n");
-                System.out.println("This room contains" + rooms[indexRoom].getItems() + "\n");
-                System.out.println("From here you can go" + rooms[indexRoom].getDirections()[indexRoom].getDirectionName() + "\n");
-            } else {
-                System.out.println(rooms[indexRoom].getDescription()+ "\n");
-                System.out.println("This room contains" + rooms[indexRoom].getItems() + "\n");
-                System.out.println("From here you can go" + rooms[indexRoom].getDirections()[indexRoom].getDirectionName() + "\n");
+                return rooms[indexRoom];
             }
         }
+        return null;
+    }
+    public Room findEndingRoom(){
+        for (int indexRoom = 0; indexRoom < getRooms().length; indexRoom++) {
+            if (rooms[indexRoom].getName().equals(endingRoom)) {
+                return rooms[indexRoom];
+            }
+        }
+        return null;
     }
 
     public String getInputFromUser(){
@@ -47,10 +52,40 @@ public class Adventure {
         return playerInput;
     }
 
-    public void input(){
-        if (getInputFromUser() == "quit" || getInputFromUser() == "exit") {
-
+    public static void main(String[] arg) throws Exception{
+        Adventure json = Parse.parse();
+        json.setPlayer(new Player(json.findStartingRoom(), json));
+        while (!json.getPlayer().getCurrentLocation().equals(json.findEndingRoom())) {
+            Room currentLocation = json.getPlayer().getCurrentLocation();
+            if (json.getPlayer().getCurrentLocation().equals(json.findStartingRoom())) {
+                System.out.println(currentLocation.getDescription() + "\n");
+                System.out.println("Your journey begins here\n");
+                System.out.println("This room contains" + currentLocation.getItems() + "\n");
+                System.out.println("From here you can go");
+                for (int i = 0; i < currentLocation.getDirections().length; i++) {
+                    System.out.println(currentLocation.getDirections()[i]);
+                }
+                System.out.println("\n");
+            } else {
+                System.out.println(currentLocation.getDescription() + "\n");
+                System.out.println("This room contains" + currentLocation.getItems() + "\n");
+                System.out.println("From here you can go");
+                for (int i = 0; i < currentLocation.getDirections().length; i++) {
+                    System.out.println(currentLocation.getDirections()[i]);
+                }
+                System.out.println("\n");
+            }
         }
-        if (getInputFromUser() == "go")
+        if (json.getPlayer().getCurrentLocation().equals(json.findEndingRoom())) {
+            Room currentLocation = json.getPlayer().getCurrentLocation();
+            System.out.println(currentLocation.getDescription() + "\n");
+            System.out.println("You have reached your final destination\n");
+            System.out.println("This room contains" + currentLocation.getItems() + "\n");
+            System.out.println("From here you can go" );
+            for (int i = 0; i < currentLocation.getDirections().length; i++) {
+                System.out.println(currentLocation.getDirections()[i]);
+            }
+            System.out.println("\n");
+        }
     }
 }

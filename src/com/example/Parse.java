@@ -8,9 +8,7 @@ import org.junit.Before;
 public class Parse {
 
 
-    @Before
-
-    public Adventure setUp() throws Exception {
+    public static Adventure parse() throws Exception {
         Gson gson = new Gson();
         String url = "https://courses.engr.illinois.edu/cs126/adventure/siebel.json";
         // Make an HTTP request to the above URL
