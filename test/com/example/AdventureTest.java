@@ -3,6 +3,7 @@ package com.example;
 import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,9 +41,5 @@ public class AdventureTest {
     public void getDirectionName(){
         assertEquals("East", adventure.getRooms()[0].getDirections()[0].getDirectionName());
     }
-
-    @Test
-
-
 
 }
