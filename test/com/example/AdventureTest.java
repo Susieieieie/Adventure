@@ -41,5 +41,4 @@ public class AdventureTest {
     public void getDirectionName(){
         assertEquals("East", adventure.getRooms()[0].getDirections()[0].getDirectionName());
     }
-
 }
