@@ -136,6 +136,7 @@ public class Adventure {
         return correctItemFormat;
     }
 
+    
     /**
      * remove an element from array
      * @param arr
