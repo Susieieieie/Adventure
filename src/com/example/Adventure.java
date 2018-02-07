@@ -28,6 +28,10 @@ public class Adventure {
         this.player = player;
     }
 
+    /**
+     * find the starting room in room array
+     * @return starting room
+     */
     public Room findStartingRoom(){
         for (int indexRoom = 0; indexRoom < getRooms().length; indexRoom++) {
             if (rooms[indexRoom].getName().equals(startingRoom)) {
@@ -36,6 +40,11 @@ public class Adventure {
         }
         return null;
     }
+
+    /**
+     * find endingRoom in rooms
+     * @return endingRoom
+     */
     public Room findEndingRoom(){
         for (int indexRoom = 0; indexRoom < getRooms().length; indexRoom++) {
             if (rooms[indexRoom].getName().equals(endingRoom)) {
@@ -45,6 +54,10 @@ public class Adventure {
         return null;
     }
 
+    /**
+     * get the User's input and toLowerCase them
+     * @return User's lowerCased input
+     */
     public String getInputFromUser(){
         Scanner in = new Scanner(System.in);
         System.out.println("Enter a string");
@@ -52,6 +65,11 @@ public class Adventure {
         return playerInput;
     }
 
+    /**
+     * main function which includes both input and output part
+     * @param arg
+     * @throws Exception
+     */
     public static void main(String[] arg) throws Exception{
         Adventure json = Parse.parse();
         json.setPlayer(new Player(json.findStartingRoom(), json));
