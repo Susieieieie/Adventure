@@ -1,18 +1,13 @@
 package com.example;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.sun.deploy.util.ArrayUtil;
+import com.sun.org.apache.xpath.internal.SourceTree;
 
-import java.rmi.server.ExportException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Adventure {
     private String startingRoom;
     private String endingRoom;
     private Room[] rooms;
-    private Player player;
 
     public String getStartingRoom() {
         return startingRoom;
@@ -26,19 +21,21 @@ public class Adventure {
         return rooms;
     }
 
-    public Player getPlayer(){
-        return player;
+    /**private boolean addItem(String item, Player player) {
+        ArrayList<String> itemArrayList = new ArrayList<String>(Arrays.asList(player.getCurrentLocation().getItems()));
+        itemArrayList.add(item);
+        player.getCurrentLocation().setItems(itemArrayList.toArray(new String[itemArrayList.size()]));
+        return true;
     }
+     */
 
-    public void setPlayer(Player player){
-        this.player = player;
-    }
 
     /**
      * find the starting room in room array
+     *
      * @return starting room
      */
-    public Room findStartingRoom(){
+    public Room findStartingRoom() {
         for (int indexRoom = 0; indexRoom < getRooms().length; indexRoom++) {
             if (rooms[indexRoom].getName().equals(startingRoom)) {
                 return rooms[indexRoom];
@@ -49,9 +46,10 @@ public class Adventure {
 
     /**
      * find endingRoom in rooms
+     *
      * @return endingRoom
      */
-    public Room findEndingRoom(){
+    private Room findEndingRoom() {
         for (int indexRoom = 0; indexRoom < getRooms().length; indexRoom++) {
             if (rooms[indexRoom].getName().equals(endingRoom)) {
                 return rooms[indexRoom];
@@ -61,109 +59,24 @@ public class Adventure {
     }
 
     /**
-     * check if player wants to exit game
-     * @return if they want to quit
-     * @throws Exception
-     */
-    public static void quitCases() throws Exception{
-        if (getInputFromUser().equals("quit") || getInputFromUser().equals("exit")) {
-            System.exit(-1);
-        }
-    }
-
-    /**
-     * check if input format is correct
-     * @return if the input format is correct
-     * @throws Exception
-     */
-    public static boolean getCorrectInputFormat() throws Exception{
-        Adventure json = Parse.parse();
-        Room currentLocation = json.getPlayer().getCurrentLocation();
-        boolean correctFormat = false;
-        if (json.getInputFromUser().contains("go") && (json.getInputFromUser().contains("east")
-                || json.getInputFromUser().contains("west") || json.getInputFromUser().contains("north")
-                || json.getInputFromUser().contains("south"))) {
-            correctFormat = true;
-        } else {
-            correctFormat = false;
-            System.out.println("I can't go" + getInputFromUser().substring(2));
-        }
-        return correctFormat;
-    }
-
-    /**
-     * change the room if the input format is correct
-     * @param adventure
-     * @return
-     * @throws Exception
-     */
-    public Player changeRoom(Adventure adventure) throws Exception {
-        Room currentLocation = adventure.getPlayer().getCurrentLocation();
-        if (adventure.getCorrectInputFormat() == true) {
-            String inputDirection = getInputFromUser().substring(3);
-            for (int indexDirection = 0; indexDirection < getRooms().length; indexDirection++) {
-                if (currentLocation.getDirections()[indexDirection].getDirectionName().equals(inputDirection)) {
-                    String roomName = currentLocation.getDirections()[indexDirection].getRoom();
-                    for (int indexRoom = 0; indexRoom < getRooms().length; indexRoom++) {
-                        if (rooms[indexRoom].getName().equals(roomName)) {
-                            adventure.setPlayer(new Player(adventure.rooms[indexRoom], adventure));
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * take the matching item with the player
-     * @return
-     * @throws Exception
-     */
-    public static boolean ifTakeItem()throws Exception{
-        Adventure json = Parse.parse();
-        Room currentLocation = json.getPlayer().getCurrentLocation();
-        boolean containItem = false;
-        boolean correctItemFormat = false;
-        for (int i = 0; i < currentLocation.getItems().length; i++) {
-            if (json.getInputFromUser().contains(currentLocation.getItems()[i])) {
-                containItem = true;
-            }
-        }
-        if (json.getInputFromUser().substring(0,4).equals("take") && containItem == true ) {
-            correctItemFormat = true;
-        }
-        return correctItemFormat;
-    }
-
-    
-    /**
      * remove an element from array
+     *
      * @param arr
      * @param removedIdx
      */
     public void removeItem(String[] arr, int removedIdx) {
+        System.out.println(arr.length);
+        System.out.println(removedIdx);
+        System.out.println(arr.length-1-removedIdx);
         System.arraycopy(arr, removedIdx + 1, arr, removedIdx, arr.length - 1 - removedIdx);
     }
 
     /**
-     * if you have items with you, you drop them
-     * @return
-     * @throws Exception
-     */
-    public static boolean ifDropItem() throws Exception{
-        Adventure json = Parse.parse();
-        json.setPlayer(new Player(json.findStartingRoom(), json));
-        Room currentLocation = json.getPlayer().getCurrentLocation();
-        boolean haveItem = false;
-        return haveItem;
-    }
-
-    /**
      * get the User's input and toLowerCase them
+     *
      * @return User's lowerCased input
      */
-    public static String getInputFromUser() throws Exception{
+    public static String getInputFromUser() {
         Scanner in = new Scanner(System.in);
         System.out.println("Enter a string");
         String playerInput = in.nextLine().toLowerCase();
@@ -171,92 +84,159 @@ public class Adventure {
     }
 
     /**
-     * main function which includes both input and output part
-     * @param arg
+     * print out information
+     *
+     * @param player
      * @throws Exception
      */
-    public static void main(String[] arg) throws Exception{
-        Adventure json = Parse.parse();
-        json.setPlayer(new Player(json.findStartingRoom(), json));
+    private void output(final Player player) {
+        Room currentLocation = player.getCurrentLocation();
+        System.out.println(currentLocation.getDescription());
+        if (currentLocation.getName().equals(player.getAdventure().getStartingRoom())) {
+            System.out.println("Your journey begins here");
+        }
+        if (currentLocation.getName().equals(player.getAdventure().getEndingRoom())) {
+            System.out.println("You have reached your final destination");
+        }
+        if (currentLocation.getName() != null) {
 
-        /* haven't arrived endingRoom*/
-        while (!json.getPlayer().getCurrentLocation().equals(json.findEndingRoom())) {
-            Room currentLocation = json.getPlayer().getCurrentLocation();
-            if (json.getPlayer().getCurrentLocation().equals(json.findStartingRoom())) {
-                System.out.println(currentLocation.getDescription() + "\n");
-                System.out.println("Your journey begins here\n");
-                System.out.println("This room contains" + currentLocation.getItems() + "\n");
-                System.out.println("From here you can go");
-                for (int i = 0; i < currentLocation.getDirections().length; i++) {
-                    System.out.println(currentLocation.getDirections()[i]);
-                }
-                System.out.println("\n");
-                json.quitCases();
-
-                if (json.getCorrectInputFormat() == true) {
-                    continue;
-                } else {
-                    System.out.println("I don't understand" + json.getInputFromUser());
-                    System.out.println(currentLocation.getDescription() + "\n");
-                    System.out.println("From here you can go");
-                    for (int i = 0; i < currentLocation.getDirections().length; i++) {
-                        System.out.println(currentLocation.getDirections()[i]);
-                    }
-                    System.out.println("\n");
-                }
-                if (ifTakeItem() == true) {
-                    for (int i = 0; i < currentLocation.getItems().length; i++) {
-                        if (getInputFromUser().equals(currentLocation.getItems()[i])) {
-                            json.removeItem(currentLocation.getItems(), i);
-                        }
-                    }
-                } else {
-                    System.out.println("I can’t take" + getInputFromUser().substring(5));
-                }
+            if (currentLocation.getItems() == null || currentLocation.getItems().length == 0) {
+                System.out.println("This room contains nothing");
 
             } else {
-                System.out.println(currentLocation.getDescription() + "\n");
-                System.out.println("This room contains" + currentLocation.getItems() + "\n");
-                System.out.println("From here you can go");
-                for (int i = 0; i < currentLocation.getDirections().length; i++) {
-                    System.out.println(currentLocation.getDirections()[i]);
-                }
-                System.out.println("\n");
-                json.quitCases();
-                if (json.getCorrectInputFormat() == true) {
-                    continue;
-                } else {
-                    System.out.println("I don't understand" + json.getInputFromUser());
-                    System.out.println(currentLocation.getDescription() + "\n");
-                    System.out.println("From here you can go");
-                    for (int i = 0; i < currentLocation.getDirections().length; i++) {
-                        System.out.println(currentLocation.getDirections()[i]);
+                System.out.print("This room contains: ");
+                if (currentLocation.getItems() != null && currentLocation.getItems().length > 0) {
+                    for (String item : currentLocation.getItems()) {
+                        System.out.print(item + ", ");
                     }
-                    System.out.println("\n");
+                    System.out.println();
                 }
-                if (ifTakeItem() == true) {
-                    for (int i = 0; i < currentLocation.getItems().length; i++) {
-                        if (getInputFromUser().equals(currentLocation.getItems()[i])) {
-                            json.removeItem(currentLocation.getItems(), i);
-                        }
-                    }
-                } else {
-                    System.out.println("I can’t take" + getInputFromUser().substring(5));
+            }
+
+            if (currentLocation.getDirections().length > 0) {
+                System.out.print("From here you can go: ");
+                for (Direction direction : currentLocation.getDirections()) {
+                    System.out.print(direction.getDirectionName() + ", ");
                 }
+                System.out.println();
+            } else {
+                System.out.println("From here you can go nowhere.");
             }
         }
-        /* have arrived endingRoom */
-        if (json.getPlayer().getCurrentLocation().equals(json.findEndingRoom())) {
-            Room currentLocation = json.getPlayer().getCurrentLocation();
-            System.out.println(currentLocation.getDescription() + "\n");
-            System.out.println("You have reached your final destination\n");
-            System.out.println("This room contains" + currentLocation.getItems() + "\n");
-            System.out.println("From here you can go" );
-            for (int i = 0; i < currentLocation.getDirections().length; i++) {
-                System.out.println(currentLocation.getDirections()[i]);
+    }
+
+    /**
+     * main function which includes both input and output part
+     *
+     * @param args
+     * @throws Exception
+     */
+    public static void main(String[] args) throws Exception {
+        Adventure adventure = Parse.parse();
+        Player player = new Player(adventure);
+        adventure.output(player);
+
+        while (!player.getCurrentLocation().equals(adventure.findEndingRoom())) {
+            String firstInput = getInputFromUser();
+            Room currentLocation = player.getCurrentLocation();
+            /**
+             * check if player wants to exit game
+             */
+            if (firstInput.equals("quit") || firstInput.equals("exit")) {
+                System.exit(-1);
             }
-            System.out.println("\n");
-            json.quitCases();
+            /**
+             * check if input format is correct
+             */
+            if (firstInput.contains("go")) {
+                if (firstInput.contains("east")
+                        || firstInput.contains("west") || firstInput.contains("north")
+                        || firstInput.contains("south") || firstInput.contains("up") || firstInput.contains("down")) {
+                    boolean hasMoved = false;
+                    for (int i = 0; i < player.getCurrentLocation().getDirections().length; i++) {
+                        if (player.getCurrentLocation().getDirections()[i].getDirectionName().equalsIgnoreCase(firstInput.substring(3))) {
+                            for (int j = 0; j < adventure.getRooms().length; j++) {
+                                if (adventure.getRooms()[j].getName().equals(player.getCurrentLocation().getDirections()[i].getRoom())) {
+                                    player.setCurrentLocation(adventure.getRooms()[j]);
+                                    adventure.output(player);
+                                    hasMoved = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (hasMoved) {
+                            break;
+                        }
+                    }
+                    if (hasMoved == false) {
+                        System.out.println("You can't " + getInputFromUser());
+                    }
+                } else {
+                    System.out.println("I don't understand: " + firstInput);
+                    System.out.println(currentLocation.getDescription());
+                    System.out.println("From here you can go: ");
+                    for (int i = 0; i < currentLocation.getDirections().length; i++) {
+                        System.out.print(currentLocation.getDirections()[i].getDirectionName());
+                    }
+                    System.out.println();
+                }
+            }
+
+            /**
+             * take the matching item with the player
+             */
+            else if (firstInput.startsWith("take")) {
+                boolean hasTaken = false;
+                for (int i = 0; i < currentLocation.getItems().length; i++) {
+                    if (firstInput.substring(5).equalsIgnoreCase(currentLocation.getItems()[i])) {
+                        player.addItemsInHand(currentLocation.getItems()[i]);
+                        currentLocation.takeItem(currentLocation.getItems()[i]);
+                        adventure.output(player);
+                        hasTaken = true;
+                        break;
+                    }
+                }
+                if (hasTaken == false) {
+                    System.out.println("You can't " + firstInput);
+                }
+            }
+
+            /**
+             * drop the item to another room
+             */
+            else if (firstInput.startsWith("drop")) {
+                boolean hasDropped = false;
+                for (String item: player.getItemsInHand()) {
+                    if (firstInput.substring(5).equalsIgnoreCase(item)) {
+                        System.out.println(player.getItemsInHand().toString());
+                        currentLocation.dropItem(item);
+                        player.dropItemsInHand(item);
+                        System.out.println(player.getItemsInHand().toString());
+                        adventure.output(player);
+                        hasDropped = true;
+                        break;
+                    }
+                }
+                if (hasDropped == false) {
+                    System.out.println("You can't " + firstInput);
+                }
+            }
+            /**
+             * output a item list
+             */
+            else if (firstInput.equals("list")) {
+                if (player.getItemsInHand() != null) {
+                    System.out.print("You are carrying: ");
+                    for (String item : player.getItemsInHand()) {
+                        System.out.print(item + ", ");
+                    }
+                    System.out.println();
+                } else {
+                    System.out.println("You have nothing.");
+                }
+            } else {
+                System.out.println("I cannot understand.");
+            }
         }
     }
 }

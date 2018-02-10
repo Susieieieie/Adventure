@@ -1,4 +1,10 @@
 package com.example;
+
+import sun.plugin.javascript.navig.Array;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Room {
     private String name;
     private String description;
@@ -27,5 +33,19 @@ public class Room {
 
     public String[] getItems() {
             return items;
+    }
+    public void dropItem(String item) {
+        ArrayList<String> myItemArrayList = new ArrayList<String>(Arrays.asList(getItems()));
+        myItemArrayList.add(item);
+        String[] newItem = myItemArrayList.toArray(new String[myItemArrayList.size()]);
+        items = newItem;
+
+    }
+
+    public void takeItem(String item) {
+        ArrayList<String> myItemArrayList = new ArrayList<String>(Arrays.asList(getItems()));
+        myItemArrayList.remove(item);
+        String[] newItem = myItemArrayList.toArray(new String[myItemArrayList.size()]);
+        items = newItem;
     }
 }
