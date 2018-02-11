@@ -6,23 +6,53 @@ import java.util.Arrays;
 public class Player {
     private Room currentLocation;
     private Adventure adventure;
-    private ArrayList<String> itemsInHand;
+    private ArrayList<Item> itemsInHand;
+    private String name;
+    private Item[] items;
+    private Double attack;
+    private Double defense;
+    private Double health;
+    private Integer level;
 
-    public ArrayList<String> getItemsInHand(){
+    public String getName() {
+        return name;
+    }
+
+    public Double getDefense() {
+        return defense;
+    }
+
+    public Double getHealth() {
+        return health;
+    }
+
+    public Double getAttack() {
+        return attack;
+    }
+
+    public Item[] getItems() {
+        return items;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public ArrayList<Item> getItemsInHand(){
         return itemsInHand;
     }
 
-    public void addItemsInHand(String item) {
+    public void addItemsInHand(Item item) {
         if(itemsInHand==null){
-            String[] itemString = {item};
-            ArrayList<String> temp = new ArrayList<String>(Arrays.asList(itemString));
+            Item[] itemString = {item};
+            ArrayList<Item> temp = new ArrayList<Item>(Arrays.asList(itemString));
             itemsInHand = temp;
             return;
         }
         itemsInHand.add(item);
     }
 
-    public void dropItemsInHand(String item) {
+    public void dropItemsInHand(Item item) {
         itemsInHand.remove(item);
     }
 

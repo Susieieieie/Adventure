@@ -1,7 +1,5 @@
 package com.example;
 
-import sun.plugin.javascript.navig.Array;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,14 +7,15 @@ public class Room {
     private String name;
     private String description;
     private Direction[] directions;
-    private String[] items;
+    private Item[] items;
+    private String[] monstersInRoom;
 
-    public Room(String name, String description,Direction[] direction, String[] items) {
-        super();
+    public Room(String name, String description,Direction[] direction, Item[] items, String[] monstersInRoom) {
         this.name = name;
         this.description = description;
         this.directions = direction;
         this.items = items;
+        this.monstersInRoom = monstersInRoom;
     }
 
     public String getName() {
@@ -31,21 +30,25 @@ public class Room {
         return directions;
     }
 
-    public String[] getItems() {
+    public Item[] getItems() {
             return items;
     }
-    public void dropItem(String item) {
-        ArrayList<String> myItemArrayList = new ArrayList<String>(Arrays.asList(getItems()));
-        myItemArrayList.add(item);
-        String[] newItem = myItemArrayList.toArray(new String[myItemArrayList.size()]);
-        items = newItem;
 
+    public String[] getMonstersInRoom(){
+        return monstersInRoom;
     }
 
-    public void takeItem(String item) {
-        ArrayList<String> myItemArrayList = new ArrayList<String>(Arrays.asList(getItems()));
+    public void dropItem(Item item) {
+        ArrayList<Item> myItemArrayList = new ArrayList<Item>(Arrays.asList(getItems()));
+        myItemArrayList.add(item);
+        Item[] newItem = myItemArrayList.toArray(new Item[myItemArrayList.size()]);
+        items = newItem;
+    }
+
+    public void takeItem(Item item) {
+        ArrayList<Item> myItemArrayList = new ArrayList<Item>(Arrays.asList(getItems()));
         myItemArrayList.remove(item);
-        String[] newItem = myItemArrayList.toArray(new String[myItemArrayList.size()]);
+        Item[] newItem = myItemArrayList.toArray(new Item[myItemArrayList.size()]);
         items = newItem;
     }
 }

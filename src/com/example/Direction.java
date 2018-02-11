@@ -5,7 +5,6 @@ public class Direction {
     private String room;
 
     public Direction(String directionName, String room) {
-        super();
         this.directionName = directionName;
         this.room = room;
     }
