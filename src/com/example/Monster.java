@@ -28,4 +28,12 @@ public class Monster {
     public Double getHealth() {
         return health;
     }
+
+    public void setHealth(Double health){
+        this.health = health;
+    }
+
+    public void setDefense(Double defense) {
+        this.defense = defense;
+    }
 }

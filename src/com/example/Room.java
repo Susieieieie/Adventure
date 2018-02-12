@@ -51,4 +51,11 @@ public class Room {
         Item[] newItem = myItemArrayList.toArray(new Item[myItemArrayList.size()]);
         items = newItem;
     }
+
+    public void removeMonsterInRoom(Monster monster) {
+        ArrayList<String> MonsterArrayList = new ArrayList<String>(Arrays.asList(getMonstersInRoom()));
+        MonsterArrayList.remove(monster);
+        String[] newMonster = MonsterArrayList.toArray(new String[MonsterArrayList.size()]);
+        monstersInRoom = newMonster;
+    }
 }

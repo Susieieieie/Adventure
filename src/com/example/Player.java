@@ -14,6 +14,8 @@ public class Player {
     private Double health;
     private Integer level;
 
+
+
     public String getName() {
         return name;
     }
@@ -24,6 +26,10 @@ public class Player {
 
     public Double getHealth() {
         return health;
+    }
+
+    public void setHealth(Double health) {
+        this.health = health;
     }
 
     public Double getAttack() {
@@ -72,16 +78,6 @@ public class Player {
         return currentLocation;
     }
 
-    public Player(Room locationName, Adventure adventure) {
-        this.setAdventure(adventure);
-        Room[] rooms = this.getAdventure().getRooms();
-        for (Room room: rooms) {
-            if (room.getName().equals(locationName)) {
-                this.setCurrentLocation(room);
-            }
-        }
-    }
-
     public Player(Adventure adventure) {
         this.setAdventure(adventure);
         for (Room room: adventure.getRooms()) {
@@ -89,5 +85,13 @@ public class Player {
                 this.setCurrentLocation(room);
             }
         }
+    }
+    public Player(String name, Item[] items, Double attack, Double defense, Double health, Integer level) {
+        this.name = name;
+        this.items = items;
+        this.attack = attack;
+        this.defense = defense;
+        this.health = health;
+        this.level = level;
     }
 }
