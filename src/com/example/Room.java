@@ -52,10 +52,10 @@ public class Room {
         items = newItem;
     }
 
-    public void removeMonsterInRoom(Monster monster) {
-        ArrayList<String> MonsterArrayList = new ArrayList<String>(Arrays.asList(getMonstersInRoom()));
-        MonsterArrayList.remove(monster);
-        String[] newMonster = MonsterArrayList.toArray(new String[MonsterArrayList.size()]);
+    public void removeMonsterInRoom(String monster) {
+        ArrayList<String> monsterArrayList = new ArrayList<String>(Arrays.asList(getMonstersInRoom()));
+        monsterArrayList.remove(monster);
+        String[] newMonster = monsterArrayList.toArray(new String[monsterArrayList.size()]);
         monstersInRoom = newMonster;
     }
 }

@@ -282,53 +282,73 @@ public class Adventure {
         monsters = newMonster;
     }
 
+    public void disegage() {
+
+    }
     /**
      * helper function about the duel without item
      */
-    public void duelWithoutItem(Player player, Monster monster) {
-        boolean canMove = false;
+    public boolean duelWithoutItem(Player player, Monster monster) {
+        boolean duelMonster = true;
         while (monster.getHealth() > 0 && player.getHealth() > 0) {
             Double playerDamage = player.getAttack() - monster.getDefense();
             monster.setHealth(monster.getHealth() - playerDamage);
-            if (monster.getHealth() <= 0) {
-                System.out.println("You win");
-                this.removeMonster(monster);
-
-                canMove = true;
+            /**String thirdInput = this.getInputFromUser();
+            if (thirdInput.equalsIgnoreCase("disegage")) {
+                duelMonster = true;
                 break;
-            } else if (player.getHealth() > 0 && monster.getHealth() > 0){
-                Double monsterDamage = monster.getAttack() - player.getDefense();
-                player.setHealth(player.getHealth() - monsterDamage);
-            } else if (player.getHealth() <= 0) {
-                System.out.println("You dead.");
-                System.exit(-1);
+            } else if (thirdInput.equalsIgnoreCase("status")) {
+                duelMonster = true;
+                Double playerCurrentHealthPercent = player.getHealth() / this.getPlayer().getHealth();
+                Double monsterCurrentHealthPercent = monster.getHealth();
+            } else {
+             */
+                if (monster.getHealth() <= 0) {
+                    System.out.println("You win");
+                    player.getCurrentLocation().removeMonsterInRoom(monster.toString());
+                    this.removeMonster(monster);
+                    player.getCurrentLocation().removeMonsterInRoom(monster.getName());
+                    duelMonster = false;
+                    break;
+                } else if (player.getHealth() > 0 && monster.getHealth() > 0) {
+                    Double monsterDamage = monster.getAttack() - player.getDefense();
+                    player.setHealth(player.getHealth() - monsterDamage);
+                    duelMonster = true;
+                } else if (player.getHealth() <= 0) {
+                    System.out.println("You dead.");
+                    duelMonster = false;
+                    System.exit(-1);
+                }
             }
-        }
+        return duelMonster;
     }
 
     /**
      * helper function about the duel with item
      */
-    public void duelWithItem(Player player, Monster monster, Item item) {
-        boolean canMove = false;
+    public boolean duelWithItem(Player player, Monster monster, Item item) {
+        boolean duelMonster = true;
 
         while (monster.getHealth() > 0 && player.getHealth() > 0) {
             Double playerDamageWithItem = player.getAttack() + item.getDamage() - monster.getDefense();
             monster.setHealth(monster.getHealth() - playerDamageWithItem);
             if (monster.getHealth() <= 0) {
                 System.out.println("You win");
+                player.getCurrentLocation().removeMonsterInRoom(monster.getName());
                 this.removeMonster(monster);
-                canMove = true;
+                duelMonster = false;
                 break;
             } else if (player.getHealth() > 0 && monster.getHealth() > 0){
                 Double monsterDamage = monster.getAttack() - player.getDefense();
                 player.setHealth(player.getHealth() - monsterDamage);
+                duelMonster = true;
             } else if (player.getHealth() <= 0) {
                 System.out.println("You dead.");
+                duelMonster = false;
                 System.exit(-1);
-                canMove = false;
             }
         }
+        return duelMonster;
     }
 
 
@@ -416,6 +436,7 @@ public class Adventure {
         while (!player.getCurrentLocation().equals(adventure2.findEndingRoom())) {
             String firstInput = getInputFromUser();
             Room currentLocation = player.getCurrentLocation();
+            boolean duelMonsters = true;
             /**
              * check if player wants to exit game
              */
@@ -424,46 +445,9 @@ public class Adventure {
             }
 
             /**
-             * check if input format is correct
-             */
-            if (firstInput.contains("go")) {
-                if (firstInput.contains("east")
-                        || firstInput.contains("west") || firstInput.contains("north")
-                        || firstInput.contains("south") || firstInput.contains("up") || firstInput.contains("down")) {
-                    boolean hasMoved = false;
-                    for (int i = 0; i < player.getCurrentLocation().getDirections().length; i++) {
-                        if (player.getCurrentLocation().getDirections()[i].getDirectionName().equalsIgnoreCase(firstInput.substring(3))) {
-                            for (int j = 0; j < adventure2.getRooms().length; j++) {
-                                if (adventure2.getRooms()[j].getName().equals(player.getCurrentLocation().getDirections()[i].getRoom())) {
-                                    player.setCurrentLocation(adventure2.getRooms()[j]);
-                                    adventure2.output(player);
-                                    hasMoved = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (hasMoved) {
-                            break;
-                        }
-                    }
-                    if (hasMoved == false) {
-                        System.out.println("You can't " + getInputFromUser());
-                    }
-                } else {
-                    System.out.println("I don't understand: " + firstInput);
-                    System.out.println(currentLocation.getDescription());
-                    System.out.println("From here you can go: ");
-                    for (int i = 0; i < currentLocation.getDirections().length; i++) {
-                        System.out.print(currentLocation.getDirections()[i].getDirectionName() + ", ");
-                    }
-                    System.out.println();
-                }
-            }
-
-            /**
              * printout player's information
              */
-            else if (firstInput.equalsIgnoreCase("playerinfo")) {
+            if (firstInput.equalsIgnoreCase("playerinfo")) {
                 System.out.println("Your level is " + player.getLevel());
                 System.out.println("Your attack is " + player.getAttack());
                 System.out.println("Your defense is " + player.getDefense());
@@ -473,22 +457,25 @@ public class Adventure {
             /**
              * duel the monsters
              */
-            else if (firstInput.startsWith("duel")) {
-                boolean duelMonsters = false;
-                for (String monsterInRoom: player.getCurrentLocation().getMonstersInRoom()) {
+            if (firstInput.startsWith("duel")) {
+                for (String monsterInRoom : player.getCurrentLocation().getMonstersInRoom()) {
                     if (monsterInRoom.equalsIgnoreCase(firstInput.substring(5))) {
-                        for (Monster monster: adventure2.getMonsters()) {
+                        for (Monster monster : adventure2.getMonsters()) {
                             if (monster.getName().equalsIgnoreCase(monsterInRoom)) {
                                 String secondInput = adventure2.getInputFromUser();
                                 if (secondInput.equalsIgnoreCase("attack")) {
-                                    duelMonsters = true;
-                                    adventure2.duelWithoutItem(player, monster);
+                                    duelMonsters = adventure2.duelWithoutItem(player, monster);
+                                    if (duelMonsters == false) {
+                                        break;
+                                    }
                                 } else if (secondInput.startsWith("attack with")) {
-                                    for (Item item: currentLocation.getItems()) {
+                                    for (Item item : currentLocation.getItems()) {
                                         if (currentLocation.getItems().length > 0 || currentLocation.getItems() != null) {
                                             if (item.getName().equals(secondInput.substring(12))) {
-                                                duelMonsters = true;
-                                                adventure2.duelWithItem(player, monster, item);
+                                                duelMonsters = adventure2.duelWithItem(player, monster, item);
+                                                if (duelMonsters == false) {
+                                                    break;
+                                                }
                                             } else {
                                                 System.out.println("You can't use that.");
                                             }
@@ -500,9 +487,50 @@ public class Adventure {
                             }
                         }
                     } else {
-                        duelMonsters = false;
+                        duelMonsters = true;
                         System.out.println("I can’t " + firstInput);
                     }
+                }
+            }
+
+            /**
+             * check if input format is correct
+             */
+            else if (firstInput.contains("go")) {
+                if (firstInput.contains("east")
+                        || firstInput.contains("west") || firstInput.contains("north")
+                        || firstInput.contains("south") || firstInput.contains("up") || firstInput.contains("down")) {
+                    boolean hasMoved = false;
+                    for (int i = 0; i < player.getCurrentLocation().getDirections().length; i++) {
+                        if (player.getCurrentLocation().getMonstersInRoom().length == 0 || player.getCurrentLocation().getMonstersInRoom() == null) {
+                            if (player.getCurrentLocation().getDirections()[i].getDirectionName().equalsIgnoreCase(firstInput.substring(3))) {
+                                for (int j = 0; j < adventure2.getRooms().length; j++) {
+                                    if (adventure2.getRooms()[j].getName().equals(player.getCurrentLocation().getDirections()[i].getRoom())) {
+                                        player.setCurrentLocation(adventure2.getRooms()[j]);
+                                        adventure2.output(player);
+                                        hasMoved = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (hasMoved) {
+                                break;
+                            }
+                        } else {
+                            System.out.println("Monster is alive, ");
+                        }
+                    }
+                    if (hasMoved == false) {
+                        System.out.println("You can't " + firstInput);
+                    }
+                } else {
+                    System.out.println("I don't understand: " + firstInput);
+                    System.out.println(currentLocation.getDescription());
+                    System.out.println("From here you can go: ");
+                    for (int i = 0; i < currentLocation.getDirections().length; i++) {
+                        System.out.print(currentLocation.getDirections()[i].getDirectionName() + ", ");
+                    }
+                    System.out.println();
                 }
             }
 
