@@ -37,7 +37,7 @@ public class Adventure {
     /** parse new json file*/
     public static final String JSON_FILE = "{\n" +
             "  \"startingRoom\": \"Room one\",\n" +
-            "  \"endingRoom\": \"Room seven\",\n" +
+            "  \"endingRoom\": \"Room eight\",\n" +
             "  \"player\":\n" +
             "  {\n" +
             "    \"name\": \"Susie\",\n" +
@@ -63,31 +63,43 @@ public class Adventure {
             "      \"name\": \"Bear\",\n" +
             "      \"attack\": 50.0,\n" +
             "      \"defense\": 20.0,\n" +
-            "      \"health\": 70.0\n" +
+            "      \"health\": 100.0\n" +
             "    },\n" +
             "    {\n" +
             "      \"name\": \"Cat\",\n" +
             "      \"attack\": 60.0,\n" +
             "      \"defense\": 10.0,\n" +
-            "      \"health\": 50.0\n" +
+            "      \"health\": 150.0\n" +
             "    },\n" +
             "    {\n" +
             "      \"name\": \"Dragon\",\n" +
             "      \"attack\": 70.0,\n" +
-            "      \"defense\": 20.0,\n" +
-            "      \"health\": 100.0\n" +
+            "      \"defense\": 30.0,\n" +
+            "      \"health\": 200.0\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"name\": \"Frog\",\n" +
+            "      \"attack\": 40.0,\n" +
+            "      \"defense\": 50.0,\n" +
+            "      \"health\": 160.0\n" +
             "    },\n" +
             "    {\n" +
             "      \"name\": \"Elephant\",\n" +
-            "      \"attack\": 50.0,\n" +
+            "      \"attack\": 80.0,\n" +
             "      \"defense\": 40.0,\n" +
-            "      \"health\": 60.0\n" +
+            "      \"health\": 180.0\n" +
             "    },\n" +
             "    {\n" +
             "      \"name\": \"MP\",\n" +
             "      \"attack\": 60.0,\n" +
             "      \"defense\": 30.0,\n" +
-            "      \"health\": 120.0\n" +
+            "      \"health\": 230.0\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"name\": \"Mom\",\n" +
+            "      \"attack\": 0.0,\n" +
+            "      \"defense\": 0.0,\n" +
+            "      \"health\": 10000.0\n" +
             "    }\n" +
             "  ],\n" +
             "  \"rooms\": [\n" +
@@ -97,7 +109,7 @@ public class Adventure {
             "      \"items\": [\n" +
             "        {\n" +
             "          \"name\": \"apple\",\n" +
-            "          \"damage\": 10.0\n" +
+            "          \"damage\": 50.0\n" +
             "        }\n" +
             "      ],\n" +
             "      \"directions\": [\n" +
@@ -114,11 +126,11 @@ public class Adventure {
             "      \"items\": [\n" +
             "        {\n" +
             "          \"name\": \"honey\",\n" +
-            "          \"damage\": 30.0\n" +
+            "          \"damage\": 80.0\n" +
             "        },\n" +
             "        {\n" +
             "          \"name\": \"bee\",\n" +
-            "          \"damage\": 20.0\n" +
+            "          \"damage\": 40.0\n" +
             "        }\n" +
             "      ],\n" +
             "      \"directions\": [\n" +
@@ -143,7 +155,7 @@ public class Adventure {
             "      \"items\": [\n" +
             "        {\n" +
             "          \"name\": \"candle\",\n" +
-            "          \"damage\": 20.0\n" +
+            "          \"damage\": 40.0\n" +
             "        }\n" +
             "      ],\n" +
             "      \"directions\": [\n" +
@@ -195,7 +207,8 @@ public class Adventure {
             "          \"directionName\": \"East\",\n" +
             "          \"room\": \"Room six\"\n" +
             "        }\n" +
-            "      ]\n" +
+            "      ],\n" +
+            "      \"monstersInRoom\": [\"Frog\"]\n" +
             "    },\n" +
             "    {\n" +
             "      \"name\": \"Room six\",\n" +
@@ -228,16 +241,37 @@ public class Adventure {
             "      \"items\": [\n" +
             "        {\n" +
             "          \"name\": \"TA\",\n" +
-            "          \"damage\": 50.0\n" +
+            "          \"damage\": 100.0\n" +
             "        }\n" +
             "      ],\n" +
             "      \"directions\": [\n" +
             "        {\n" +
             "          \"directionName\": \"West\",\n" +
             "          \"room\": \"Room six\"\n" +
+            "        },\n" +
+            "        {\n" +
+            "          \"directionName\": \"East\",\n" +
+            "          \"room\": \"Room eight\"\n" +
             "        }\n" +
             "      ],\n" +
             "      \"monstersInRoom\": [\"MP\"]\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"name\": \"Room eight\",\n" +
+            "      \"description\": \"You are at home, there is a huge bed:-)\",\n" +
+            "      \"items\": [\n" +
+            "        {\n" +
+            "          \"name\": \"pillow\",\n" +
+            "          \"damage\": 0.0\n" +
+            "        }\n" +
+            "      ],\n" +
+            "      \"directions\": [\n" +
+            "        {\n" +
+            "          \"directionName\": \"West\",\n" +
+            "          \"room\": \"Room seven\"\n" +
+            "        }\n" +
+            "      ],\n" +
+            "      \"monstersInRoom\": [\"Mom\"]\n" +
             "    }\n" +
             "  ]\n" +
             "}";
@@ -282,46 +316,82 @@ public class Adventure {
         monsters = newMonster;
     }
 
-    public void disegage() {
-
+    public void statusPlayer(Player player) {
+        String playerHealthOutput = "";
+        Double[] healthArray = { 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00};
+        Double playerHealthPercent = player.getHealth() / 300 * Math.pow(1.3, (player.getLevel() - 1));
+        for (int j = 0; j < healthArray.length; j++) {
+            if (playerHealthPercent >= healthArray[j]) {
+                playerHealthOutput += "1";
+            } else {
+                playerHealthOutput += "0";
+            }
+        }
+        System.out.println("Player's current health is: " + playerHealthOutput);
     }
+
+    public void statusMonster(Monster monster) {
+        String monsterHealthOutput = "";
+        Double[] healthArray = { 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00};
+        for (int i = 0; i < this.getMonsters().length; i++) {
+            if (this.getMonsters()[i].equals(monster.getName())) {
+                Double monsterHealthPercent = monster.getHealth() / this.getMonsters()[i].getHealth();
+                for (int j = 0; j < healthArray.length; j++) {
+                    if (monsterHealthPercent >= healthArray[j]) {
+                        monsterHealthOutput += "1";
+                    } else {
+                        monsterHealthOutput += "0";
+                    }
+                }
+            }
+        }
+        System.out.println("Monster's current health is: " + monsterHealthOutput);
+    }
+
     /**
      * helper function about the duel without item
      */
-    public boolean duelWithoutItem(Player player, Monster monster) {
-        boolean duelMonster = true;
-        while (monster.getHealth() > 0 && player.getHealth() > 0) {
-            Double playerDamage = player.getAttack() - monster.getDefense();
-            monster.setHealth(monster.getHealth() - playerDamage);
-            /**String thirdInput = this.getInputFromUser();
-            if (thirdInput.equalsIgnoreCase("disegage")) {
-                duelMonster = true;
-                break;
-            } else if (thirdInput.equalsIgnoreCase("status")) {
-                duelMonster = true;
-                Double playerCurrentHealthPercent = player.getHealth() / this.getPlayer().getHealth();
-                Double monsterCurrentHealthPercent = monster.getHealth();
-            } else {
-             */
-                if (monster.getHealth() <= 0) {
-                    System.out.println("You win");
-                    player.getCurrentLocation().removeMonsterInRoom(monster.toString());
-                    this.removeMonster(monster);
-                    player.getCurrentLocation().removeMonsterInRoom(monster.getName());
-                    this.levelUp(player, monster);
-                    duelMonster = false;
-                    break;
-                } else if (player.getHealth() > 0 && monster.getHealth() > 0) {
-                    Double monsterDamage = monster.getAttack() - player.getDefense();
-                    player.setHealth(player.getHealth() - monsterDamage);
-                    duelMonster = true;
-                } else if (player.getHealth() <= 0) {
-                    System.out.println("You dead.");
-                    duelMonster = false;
-                    System.exit(-1);
+    public void duelWithoutItem(Player player, Monster monster) {
+        for (Monster aimMonster : this.getMonsters()) {
+            Double orginalHelath = aimMonster.getHealth();
+            if (aimMonster.equals(monster)) {
+                while (monster.getHealth() > 0 && player.getHealth() > 0) {
+                    Double playerDamage = player.getAttack() - monster.getDefense();
+                    monster.setHealth(monster.getHealth() - playerDamage);
+                    String thirdInput = this.getInputFromUser();
+                    if (thirdInput.equalsIgnoreCase("disegage")) {
+                        break;
+                    } else if (thirdInput.equalsIgnoreCase("status")) {
+                        this.statusPlayer(player);
+                        String monsterHealthOutput = "";
+                        Double[] healthArray = {0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00};
+                        Double monsterHealthPercent = monster.getHealth() / orginalHelath;
+                        for (int j = 0; j < healthArray.length; j++) {
+                            if (monsterHealthPercent >= healthArray[j]) {
+                                monsterHealthOutput += "1";
+                            } else {
+                                monsterHealthOutput += "0";
+                            }
+                        }
+                        System.out.println("Monster's current health is: " + monsterHealthOutput);
+                    }
+                    if (monster.getHealth() <= 0) {
+                        System.out.println("You win");
+                        player.getCurrentLocation().removeMonsterInRoom(monster.toString());
+                        this.removeMonster(monster);
+                        player.getCurrentLocation().removeMonsterInRoom(monster.getName());
+                        this.levelUp(player, monster);
+                        break;
+                    } else if (player.getHealth() > 0 && monster.getHealth() > 0) {
+                        Double monsterDamage = monster.getAttack() - player.getDefense();
+                        player.setHealth(player.getHealth() - monsterDamage);
+                    } else if (player.getHealth() <= 0) {
+                        System.out.println("You dead.");
+                        System.exit(-1);
+                    }
                 }
             }
-        return duelMonster;
+        }
     }
 
     /**
@@ -329,25 +399,48 @@ public class Adventure {
      */
     public boolean duelWithItem(Player player, Monster monster, Item item) {
         boolean duelMonster = true;
-
-        while (monster.getHealth() > 0 && player.getHealth() > 0) {
-            Double playerDamageWithItem = player.getAttack() + item.getDamage() - monster.getDefense();
-            monster.setHealth(monster.getHealth() - playerDamageWithItem);
-            if (monster.getHealth() <= 0) {
-                System.out.println("You win");
-                player.getCurrentLocation().removeMonsterInRoom(monster.getName());
-                this.removeMonster(monster);
-                this.levelUp(player, monster);
-                duelMonster = false;
-                break;
-            } else if (player.getHealth() > 0 && monster.getHealth() > 0){
-                Double monsterDamage = monster.getAttack() - player.getDefense();
-                player.setHealth(player.getHealth() - monsterDamage);
-                duelMonster = true;
-            } else if (player.getHealth() <= 0) {
-                System.out.println("You dead.");
-                duelMonster = false;
-                System.exit(-1);
+        for (Monster aimMonster : this.getMonsters()) {
+            Double orginalHelath = aimMonster.getHealth();
+            if (aimMonster.equals(monster)) {
+                while (monster.getHealth() > 0 && player.getHealth() > 0) {
+                    Double playerDamageWithItem = player.getAttack() + item.getDamage() - monster.getDefense();
+                    monster.setHealth(monster.getHealth() - playerDamageWithItem);
+                    Double playerDamage = player.getAttack() - monster.getDefense();
+                    monster.setHealth(monster.getHealth() - playerDamage);
+                    String thirdInput = this.getInputFromUser();
+                    if (thirdInput.equalsIgnoreCase("disegage")) {
+                        break;
+                    } else if (thirdInput.equalsIgnoreCase("status")) {
+                        this.statusPlayer(player);
+                        String monsterHealthOutput = "";
+                        Double[] healthArray = {0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00};
+                        Double monsterHealthPercent = monster.getHealth() / orginalHelath;
+                        for (int j = 0; j < healthArray.length; j++) {
+                            if (monsterHealthPercent >= healthArray[j]) {
+                                monsterHealthOutput += "1";
+                            } else {
+                                monsterHealthOutput += "0";
+                            }
+                        }
+                        System.out.println("Monster's current health is: " + monsterHealthOutput);
+                    }
+                    if (monster.getHealth() <= 0) {
+                        System.out.println("You win");
+                        player.getCurrentLocation().removeMonsterInRoom(monster.getName());
+                        this.removeMonster(monster);
+                        this.levelUp(player, monster);
+                        duelMonster = false;
+                        break;
+                    } else if (player.getHealth() > 0 && monster.getHealth() > 0) {
+                        Double monsterDamage = monster.getAttack() - player.getDefense();
+                        player.setHealth(player.getHealth() - monsterDamage);
+                        duelMonster = true;
+                    } else if (player.getHealth() <= 0) {
+                        System.out.println("You dead.");
+                        duelMonster = false;
+                        System.exit(-1);
+                    }
+                }
             }
         }
         return duelMonster;
@@ -357,7 +450,6 @@ public class Adventure {
      * winning a duel-- level up
      */
     public void levelUp(Player player, Monster monster){
-        System.out.println(player.getLevel());
         Double experience = ((monster.getAttack() + monster.getDefense()) / 2 + monster.getHealth()) * 20;
         Double accumulativeExperience = 0.0;
         Double experienceNeeded = 0.0;
@@ -365,18 +457,17 @@ public class Adventure {
         for (int i = 0; i < experiencePerLevel.length; i++) {
             experienceNeeded = experiencePerLevel[player.getLevel() - 1];
         }
-        System.out.println(player.getLevel());
         if (monster.getHealth() <= 0) {
             accumulativeExperience += experience;
             if (accumulativeExperience >= experienceNeeded) {
-                System.out.println(player.getLevel());
                 player.setLevel(player.getLevel() + 1);
                 player.setHealth(player.getHealth() * 1.3);
                 player.setDefense(player.getDefense() * 1.5);
                 player.setAttack(player.getAttack() * 1.5);
-                System.out.println(accumulativeExperience);
-                System.out.println(player.getHealth());
-                System.out.println("Congrats, you level up to " + (player.getLevel() + 1));
+                System.out.println("Congrats, you level up to " + (player.getLevel()));
+                System.out.println("Your current health is: " + player.getHealth());
+                System.out.println("Your current attack is: " + player.getAttack());
+                System.out.println("Your current defense is: " + player.getDefense());
                 accumulativeExperience -= experienceNeeded;
             }
         }
@@ -453,7 +544,6 @@ public class Adventure {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        /**Adventure adventure = Parse.parse();*/
         Gson json = new Gson();
         Adventure adventure2 = json.fromJson(JSON_FILE, Adventure.class);
         Player player = adventure2.getPlayer();
@@ -478,7 +568,7 @@ public class Adventure {
             /**
              * printout player's information
              */
-            if (firstInput.equalsIgnoreCase("playerinfo")) {
+            else if (firstInput.equalsIgnoreCase("playerinfo")) {
                 System.out.println("Your level is " + player.getLevel());
                 System.out.println("Your attack is " + player.getAttack());
                 System.out.println("Your defense is " + player.getDefense());
@@ -486,16 +576,16 @@ public class Adventure {
             }
 
             /**
-             * duel the monsters
+             * duel the monsters (including "attack" and "atack with item")
              */
-            if (firstInput.startsWith("duel")) {
+            else if (firstInput.startsWith("duel")) {
                 for (String monsterInRoom : player.getCurrentLocation().getMonstersInRoom()) {
                     if (monsterInRoom.equalsIgnoreCase(firstInput.substring(5))) {
                         for (Monster monster : adventure2.getMonsters()) {
                             if (monster.getName().equalsIgnoreCase(monsterInRoom)) {
                                 String secondInput = adventure2.getInputFromUser();
                                 if (secondInput.equalsIgnoreCase("attack")) {
-                                    duelMonsters = adventure2.duelWithoutItem(player, monster);
+                                    adventure2.duelWithoutItem(player, monster);
                                     if (duelMonsters == false) {
                                         break;
                                     }
@@ -525,7 +615,7 @@ public class Adventure {
             }
 
             /**
-             * check if input format is correct
+             * check if input format is correct and implement it.
              */
             else if (firstInput.contains("go")) {
                 if (firstInput.contains("east")
