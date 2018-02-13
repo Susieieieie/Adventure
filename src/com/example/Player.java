@@ -24,6 +24,10 @@ public class Player {
         return defense;
     }
 
+    public void setDefense(Double defense) {
+        this.defense = defense;
+    }
+
     public Double getHealth() {
         return health;
     }
@@ -36,12 +40,20 @@ public class Player {
         return attack;
     }
 
+    public void setAttack(Double attack) {
+        this.attack = attack;
+    }
+
     public Item[] getItems() {
         return items;
     }
 
     public Integer getLevel() {
         return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public ArrayList<Item> getItemsInHand(){

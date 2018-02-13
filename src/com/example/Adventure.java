@@ -308,6 +308,7 @@ public class Adventure {
                     player.getCurrentLocation().removeMonsterInRoom(monster.toString());
                     this.removeMonster(monster);
                     player.getCurrentLocation().removeMonsterInRoom(monster.getName());
+                    this.levelUp(player, monster);
                     duelMonster = false;
                     break;
                 } else if (player.getHealth() > 0 && monster.getHealth() > 0) {
@@ -336,6 +337,7 @@ public class Adventure {
                 System.out.println("You win");
                 player.getCurrentLocation().removeMonsterInRoom(monster.getName());
                 this.removeMonster(monster);
+                this.levelUp(player, monster);
                 duelMonster = false;
                 break;
             } else if (player.getHealth() > 0 && monster.getHealth() > 0){
@@ -349,6 +351,35 @@ public class Adventure {
             }
         }
         return duelMonster;
+    }
+
+    /**
+     * winning a duel-- level up
+     */
+    public void levelUp(Player player, Monster monster){
+        System.out.println(player.getLevel());
+        Double experience = ((monster.getAttack() + monster.getDefense()) / 2 + monster.getHealth()) * 20;
+        Double accumulativeExperience = 0.0;
+        Double experienceNeeded = 0.0;
+        Double[] experiencePerLevel = {25.0, 50.0, 82.5, 145.75, 251.075, 436.5, 756.3, 1312.1, 2275.2, 3946.0};
+        for (int i = 0; i < experiencePerLevel.length; i++) {
+            experienceNeeded = experiencePerLevel[player.getLevel() - 1];
+        }
+        System.out.println(player.getLevel());
+        if (monster.getHealth() <= 0) {
+            accumulativeExperience += experience;
+            if (accumulativeExperience >= experienceNeeded) {
+                System.out.println(player.getLevel());
+                player.setLevel(player.getLevel() + 1);
+                player.setHealth(player.getHealth() * 1.3);
+                player.setDefense(player.getDefense() * 1.5);
+                player.setAttack(player.getAttack() * 1.5);
+                System.out.println(accumulativeExperience);
+                System.out.println(player.getHealth());
+                System.out.println("Congrats, you level up to " + (player.getLevel() + 1));
+                accumulativeExperience -= experienceNeeded;
+            }
+        }
     }
 
 
@@ -517,7 +548,8 @@ public class Adventure {
                                 break;
                             }
                         } else {
-                            System.out.println("Monster is alive, ");
+                            System.out.print("Monster is alive, ");
+                            break;
                         }
                     }
                     if (hasMoved == false) {
@@ -578,7 +610,7 @@ public class Adventure {
                 if (player.getItemsInHand() != null) {
                     System.out.print("You are carrying: ");
                     for (Item item : player.getItemsInHand()) {
-                        System.out.print(item + ", ");
+                        System.out.print(item.getName() + ", ");
                     }
                     System.out.println();
                 } else {
