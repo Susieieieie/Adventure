@@ -45,17 +45,19 @@ public class Room {
         items = newItem;
     }
 
-    public void takeItem(Item item) {
+    public Item[] takeItem(Item item) {
         ArrayList<Item> myItemArrayList = new ArrayList<Item>(Arrays.asList(getItems()));
         myItemArrayList.remove(item);
         Item[] newItem = myItemArrayList.toArray(new Item[myItemArrayList.size()]);
         items = newItem;
+        return items;
     }
 
-    public void removeMonsterInRoom(String monster) {
+    public String[] removeMonsterInRoom(String monster) {
         ArrayList<String> monsterArrayList = new ArrayList<String>(Arrays.asList(getMonstersInRoom()));
         monsterArrayList.remove(monster);
         String[] newMonster = monsterArrayList.toArray(new String[monsterArrayList.size()]);
         monstersInRoom = newMonster;
+        return monstersInRoom;
     }
 }
